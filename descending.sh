@@ -1,25 +1,24 @@
 #!/bin/bash -x
-echo enter the no of element
-read n1
-for ((i=0; i<$n1; i++))
+
+read -p "Enter input a : " a
+read -p "Enter input b : " b
+read -p "Enter input c : " c
+
+declare -A operationDic
+declare -a operationArray
+operation1=$(($a+$b*$c))
+operation2=$(($a*$b+$c))
+operation3=$(($a+$b/$c))
+operation4=$(($a%$b+$c))
+
+for (( i=1 ; i<=4 ; i++ ))
 do
-	echo enter `expr $i + 1` the element.
-	read a[$i]
+	operationDic[$i]=$((operation$i))
 done
-for (( i=0; i<$n1; i++ ))
+
+for (( j=0 ; j<4 ; j++ ))
 do
-	for (( j=`expr $i + 1`; j<$n1; j++ ))
-	do
-		if [ ${a[$i]} -gt ${a[$j]} ]
-		then
-			x=${a[$i]}
-			a[$i]=${a[$j]}
-			a[$j]=$x
-		fi
-	done
+	operationArray[$j]=${operationDic[$(($j+1))]}
 done
-echo "The Descending order is: "
-for (( i=$n1; i>0; i-- ))
-do
-	echo ${a[`expr $i - 1`]}
-done
+
+printf '%s\n' "${operationArray[@]}" | sort -nr
